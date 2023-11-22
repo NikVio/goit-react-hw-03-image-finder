@@ -1,16 +1,31 @@
-export const App = () => {
-  return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
-      React homework template
-    </div>
-  );
-};
+import { Component } from 'react';
+import { fetchImages } from './axios';
+import { ImageGallery } from './ImageGallery/ImageGallery';
+
+import { Searchbar } from './Searchbar/Searchbar';
+
+export class App extends Component {
+  state = {
+    page: 1,
+    query: '',
+  };
+
+  async componentDidMount() {
+    const { query, page } = this.state;
+    try {
+      const initialImages = await fetchImages(query, page);
+      console.log(initialImages);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        <Searchbar />
+        <ImageGallery />
+      </div>
+    );
+  }
+}
