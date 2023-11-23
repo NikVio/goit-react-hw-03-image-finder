@@ -8,15 +8,13 @@ import { Searchbar } from './Searchbar/Searchbar';
 export class App extends Component {
   state = {
     page: 1,
-    query: '',
     val: '',
     images: [],
-    total: 0,
-    modalImage: [],
+    total: null,
   };
 
   handleSubmit = evt => {
-    this.setState({ val: evt });
+    this.setState({ val: evt, images: [], page: 1 });
   };
 
   async componentDidUpdate(prevProps, prevState) {
@@ -35,11 +33,11 @@ export class App extends Component {
 
   getImages = async (query, page) => {
     try {
-      const { webformatURL, totalHits } = await fetchImages(query, page);
+      const { hits, totalHits } = await fetchImages(query, page);
 
       this.setState(prevState => {
         return {
-          images: [...prevState.images, webformatURL],
+          images: [...prevState.images, ...hits],
           total: totalHits,
         };
       });

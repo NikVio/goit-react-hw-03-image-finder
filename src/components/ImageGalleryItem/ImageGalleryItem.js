@@ -1,13 +1,10 @@
-export const ImageGalleryItem = ({ images, id }) => {
+export const ImageGalleryItem = ({ image, tags }) => {
+  // const { image, tags } = this.props;
   return (
-    <ul>
-      {images.map(image => {
-        return (
-          <li class="gallery-item" key={id}>
-            <img src={image} alt="img from backend" />
-          </li>
-        );
-      })}
-    </ul>
+    <>
+      <li>
+        <img src={image} alt={tags} width="350" />
+      </li>
+    </>
   );
 };
