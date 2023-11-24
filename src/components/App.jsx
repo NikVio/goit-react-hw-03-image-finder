@@ -4,17 +4,29 @@ import { fetchImages } from './axios';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 
 import { Searchbar } from './Searchbar/Searchbar';
+import { FidgetSpinner } from 'react-loader-spinner';
+import { Button } from './LoadMore/Button';
 
 export class App extends Component {
   state = {
     page: 1,
     val: '',
     images: [],
-    total: null,
+    total: 0,
+    isLoading: false,
+    error: null,
   };
 
   handleSubmit = evt => {
     this.setState({ val: evt, images: [], page: 1 });
+  };
+
+  handleLoadMore = () => {
+    this.setState(prevState => {
+      return {
+        page: prevState.page + 1,
+      };
+    });
   };
 
   async componentDidUpdate(prevProps, prevState) {
@@ -22,17 +34,11 @@ export class App extends Component {
     if (prevState.val !== val || prevState.page !== page) {
       this.getImages(val, page);
     }
-    // const { query, page } = this.state;
-    // try {
-    //   const initialImages = await fetchImages(query, page);
-    //   console.log(initialImages);
-    // } catch (error) {
-    //   console.log(error);
-    // }
   }
 
   getImages = async (query, page) => {
     try {
+      this.setState({ isLoading: true });
       const { hits, totalHits } = await fetchImages(query, page);
 
       this.setState(prevState => {
@@ -41,19 +47,38 @@ export class App extends Component {
           total: totalHits,
         };
       });
-
-      //console.log(data);
     } catch (error) {
-      toast.error('This is an error!');
+      toast.error('Oops, something went wrong, please try again later...');
+    } finally {
+      this.setState({ isLoading: false });
     }
   };
 
   render() {
-    const { images } = this.state;
+    const { images, val, isLoading, total } = this.state;
     return (
       <div>
         <Searchbar onSubmit={this.handleSubmit} />
-        <ImageGallery images={images} />
+        {images.length === 0 && val !== '' && (
+          <p>Sorry. Bad request {val}! Try again...</p>
+        )}
+        {isLoading && (
+          <FidgetSpinner
+            visible={true}
+            height="80"
+            width="80"
+            ariaLabel="dna-loading"
+            wrapperStyle={{}}
+            wrapperClass="dna-wrapper"
+            ballColors={['#ff0000', '#00ff00', '#0000ff']}
+            backgroundColor="#F4442E"
+          />
+        )}
+
+        {val && <ImageGallery images={images} />}
+        {total > images.length && (
+          <Button onClick={this.handleLoadMore} btnText="Load More" />
+        )}
         <Toaster />
       </div>
     );
