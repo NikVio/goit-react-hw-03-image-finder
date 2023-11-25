@@ -1,5 +1,6 @@
 import { ImageModal } from 'components/Modal/Modal';
 import { Component } from 'react';
+import { Image, ImageItem } from './ImageGalleryItem.styled';
 
 export class ImageGalleryItem extends Component {
   state = {
@@ -25,9 +26,9 @@ export class ImageGalleryItem extends Component {
 
     return (
       <>
-        <li>
-          <img src={image} alt={tags} width="350" onClick={this.openModal} />
-        </li>
+        <ImageItem>
+          <Image src={image} alt={tags} onClick={this.openModal} />
+        </ImageItem>
 
         <ImageModal
           isOpen={isModalOpen}

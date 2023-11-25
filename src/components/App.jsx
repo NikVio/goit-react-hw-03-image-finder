@@ -6,19 +6,16 @@ import { ImageGallery } from './ImageGallery/ImageGallery';
 import { Searchbar } from './Searchbar/Searchbar';
 import { FidgetSpinner } from 'react-loader-spinner';
 import { Button } from './LoadMore/Button';
+import { GlobalStyle } from './GlobalStyle';
+import { Container } from './App.styled';
 
 export class App extends Component {
   state = {
     page: 1,
     val: '',
     images: [],
-    total: 0,
-    isLoading: false,
-    error: null,
-  };
 
-  handleSubmit = evt => {
-    this.setState({ val: evt, images: [], page: 1 });
+    isLoading: false,
   };
 
   handleLoadMore = () => {
@@ -35,6 +32,19 @@ export class App extends Component {
       this.getImages(val, page);
     }
   }
+
+  handleSubmit = evt => {
+    // this.setState(prevState => {
+    //   return { val: prevState.val.slice(15) };
+    // });
+    //const newEvt = Date.now().slice(5);
+
+    this.setState({
+      val: evt,
+      images: [],
+      page: 1,
+    });
+  };
 
   getImages = async (query, page) => {
     try {
@@ -55,13 +65,15 @@ export class App extends Component {
   };
 
   render() {
-    const { images, val, isLoading, total } = this.state;
+    const { images, val, isLoading } = this.state;
+    // const newVal = val.slice(14);
+    // console.log(newVal);
     return (
-      <div>
+      <Container>
         <Searchbar onSubmit={this.handleSubmit} />
-        {images.length === 0 && val !== '' && (
+        {/* {images.length === 0 && val !== '' && (
           <p>Sorry. Bad request {val}! Try again...</p>
-        )}
+        )} */}
         {isLoading && (
           <FidgetSpinner
             visible={true}
@@ -76,11 +88,12 @@ export class App extends Component {
         )}
 
         {val && <ImageGallery images={images} />}
-        {total > images.length && (
+        {images.length !== 0 && !isLoading && (
           <Button onClick={this.handleLoadMore} btnText="Load More" />
         )}
         <Toaster />
-      </div>
+        <GlobalStyle />
+      </Container>
     );
   }
 }

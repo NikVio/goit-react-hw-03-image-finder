@@ -1,4 +1,11 @@
 import { Component } from 'react';
+import { BsSearch } from 'react-icons/bs';
+import {
+  SearchbarBox,
+  SearchbarButton,
+  SearchbarForm,
+  SearchbarInput,
+} from './Searchbar.styled';
 
 export class Searchbar extends Component {
   state = {
@@ -17,13 +24,13 @@ export class Searchbar extends Component {
   render() {
     const { valForm } = this.state;
     return (
-      <header>
-        <form onSubmit={this.handleFormSubmit}>
-          <button type="submit">
-            <span>Search</span>
-          </button>
+      <SearchbarBox>
+        <SearchbarForm onSubmit={this.handleFormSubmit}>
+          <SearchbarButton type="submit">
+            <BsSearch size={25} />
+          </SearchbarButton>
 
-          <input
+          <SearchbarInput
             type="text"
             autoComplete="off"
             autoFocus
@@ -31,8 +38,8 @@ export class Searchbar extends Component {
             onChange={this.handleChange}
             value={valForm}
           />
-        </form>
-      </header>
+        </SearchbarForm>
+      </SearchbarBox>
     );
   }
 }

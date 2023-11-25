@@ -1,7 +1,11 @@
+import { ButtonBox, ButtonLoad } from './ButtonLoad.styled';
+
 export const Button = ({ onClick, btnText }) => {
   return (
-    <button onClick={onClick} type="button">
-      {btnText}
-    </button>
+    <ButtonBox>
+      <ButtonLoad onClick={onClick} type="button">
+        {btnText}
+      </ButtonLoad>
+    </ButtonBox>
   );
 };
