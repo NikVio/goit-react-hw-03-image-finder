@@ -67,7 +67,7 @@ export class App extends Component {
   };
 
   render() {
-    const { images, isLoading } = this.state;
+    const { images, isLoading, total, val } = this.state;
 
     return (
       <Container>
@@ -85,8 +85,8 @@ export class App extends Component {
             backgroundColor="#F4442E"
           />
         )}
-        {images.length > 0 && <ImageGallery images={images} />}
-        {images.length > 0 && (
+        {val && <ImageGallery images={images} />}
+        {total > images.length && (
           <Button onClick={this.handleLoadMore} btnText="Load More" />
         )}
 
