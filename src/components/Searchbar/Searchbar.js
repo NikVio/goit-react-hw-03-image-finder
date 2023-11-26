@@ -19,10 +19,12 @@ export class Searchbar extends Component {
   handleFormSubmit = evt => {
     evt.preventDefault();
     this.props.onSubmit(this.state.valForm);
+    this.setState({ valForm: '' });
   };
 
   render() {
     const { valForm } = this.state;
+
     return (
       <SearchbarBox>
         <SearchbarForm onSubmit={this.handleFormSubmit}>

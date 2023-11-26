@@ -14,6 +14,7 @@ export class App extends Component {
     page: 1,
     val: '',
     images: [],
+    total: 0,
 
     isLoading: false,
   };
@@ -33,19 +34,6 @@ export class App extends Component {
     }
   }
 
-  handleSubmit = evt => {
-    // this.setState(prevState => {
-    //   return { val: prevState.val.slice(15) };
-    // });
-    //const newEvt = Date.now().slice(5);
-
-    this.setState({
-      val: evt,
-      images: [],
-      page: 1,
-    });
-  };
-
   getImages = async (query, page) => {
     try {
       this.setState({ isLoading: true });
@@ -64,16 +52,29 @@ export class App extends Component {
     }
   };
 
+  handleSubmit = evt => {
+    if (evt === '') {
+      toast.error('The field must not be empty!🤦‍♂️');
+      return;
+    }
+
+    this.setState({
+      val: evt,
+      images: [],
+      page: 1,
+    });
+    toast.dismiss();
+  };
+
   render() {
-    const { images, val, isLoading } = this.state;
-    // const newVal = val.slice(14);
-    // console.log(newVal);
+    const { images, val, isLoading, total } = this.state;
+
     return (
       <Container>
         <Searchbar onSubmit={this.handleSubmit} />
-        {/* {images.length === 0 && val !== '' && (
-          <p>Sorry. Bad request {val}! Try again...</p>
-        )} */}
+        {images.length === 0 && val !== '' && (
+          <p>Sorry. Bad request {val}😜! Try again...✌</p>
+        )}
         {isLoading && (
           <FidgetSpinner
             visible={true}
@@ -86,11 +87,12 @@ export class App extends Component {
             backgroundColor="#F4442E"
           />
         )}
+        <ImageGallery images={images} />
 
-        {val && <ImageGallery images={images} />}
-        {images.length !== 0 && !isLoading && (
+        {total > images.length && (
           <Button onClick={this.handleLoadMore} btnText="Load More" />
         )}
+
         <Toaster />
         <GlobalStyle />
       </Container>
