@@ -67,14 +67,12 @@ export class App extends Component {
   };
 
   render() {
-    const { images, val, isLoading, total } = this.state;
+    const { images, isLoading } = this.state;
 
     return (
       <Container>
         <Searchbar onSubmit={this.handleSubmit} />
-        {images.length === 0 && val !== '' && (
-          <p>Sorry. Bad request {val}😜! Try again...✌</p>
-        )}
+
         {isLoading && (
           <FidgetSpinner
             visible={true}
@@ -87,9 +85,8 @@ export class App extends Component {
             backgroundColor="#F4442E"
           />
         )}
-        <ImageGallery images={images} />
-
-        {total > images.length && (
+        {images.length > 0 && <ImageGallery images={images} />}
+        {images.length > 0 && (
           <Button onClick={this.handleLoadMore} btnText="Load More" />
         )}
 
